@@ -3,13 +3,13 @@ from pathlib import Path
 from win32com.client import Dispatch
 
 # directory to mirror
-ammunition = r"F:\SteamLibrary\steamapps\\common\\projectM\\presets"
+ammunition = r"F:\SteamLibrary\steamapps" + chr(92) + "common" + chr(92) + "projectM" + chr(92) + "presets"
 
 # name of new directory
 directoryname = "presets_inactive"
 
 # new directory location
-targetlocation = r"F:\SteamLibrary\steamapps\\common\\projectM\\" 
+targetlocation = r"F:\SteamLibrary\steamapps" + chr(92) + "common" + chr(92) + "projectM"
 target = targetlocation + directoryname
 
 def run():
@@ -18,22 +18,22 @@ def run():
 
 def mirrorDirectory(startpath, directoryname, targetpath, targetlocation):
     for root, dirs, files in os.walk(startpath):
-        level = root.replace(startpath, '').count(os.sep)
-        newpath = str(Path(root).resolve()).replace(startpath, targetlocation + chr(92) + directoryname)
+        newpath = str(Path(root).resolve()).replace(r"\projectM\presets", r"\projectM" + chr(92) + directoryname)
         createDirectory(newpath)
-        createShortcut(newpath, Path(root).resolve())
-        createShortcut(Path(root).resolve(), newpath)
+        createShortcut(newpath,              Path(root).resolve())
+        createShortcut(Path(root).resolve(), newpath             )
 
 def createDirectory(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
 def createShortcut(path, target):
-    print(str(target) + "\\"+ str(os.path.basename(path)) + ".lnk")
+    filename = str(target) + chr(92) + str(os.path.basename(path)) + ".lnk"
     shell = Dispatch('WScript.Shell')
-    shortcut = shell.CreateShortCut(str(target) + "\\"+ str(os.path.basename(path)) + ".lnk")
+    shortcut = shell.CreateShortCut(filename)
     shortcut.Targetpath = str(str(path) )
     shortcut.save()
+    print(filename)
 
 run() 
 print("Finished")
