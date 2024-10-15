@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 from win32com.client import Dispatch
 
+# !!replace every \ with chr(92)
+# or dont touch them if they work
+
 # directory to mirror
 ammunition = r"F:\SteamLibrary\steamapps" + chr(92) + "common" + chr(92) + "projectM" + chr(92) + "presets"
 
